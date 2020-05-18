@@ -27,6 +27,7 @@ public class ReflectedStockItemBuilder implements IStockItemBuilder {
 
 		try {
 			// obtain the child nodes
+
 			NodeList children = el.getChildNodes();
 			// iterate over the nodes and populate a map of attributes that we will use later for instantiating the java objects
 			Map<String, String> instanceAttributes = new HashMap<String, String>();
@@ -46,15 +47,14 @@ public class ReflectedStockItemBuilder implements IStockItemBuilder {
 					// + " of class " + children.item(i).getClass());
 				}
 			}
-			
 
-			
 			logger.info("read out child elements and values: " + instanceAttributes);
 
 			// try to obtain the class given the classname and create an
 			// instance of it
 			Class<?> klass = Class.forName(instanceAttributes.get("class"));
-			IStockItem instance = (IStockItem) klass.newInstance();
+			// TODO: ADDED getConstructor() to remove deprecated warning
+			IStockItem instance = (IStockItem) klass.getConstructor().newInstance();
 
 //			for (Field field : klass.getDeclaredFields()) {
 //				show("found field: " + field.getClass() + " of name " + field.getName());
