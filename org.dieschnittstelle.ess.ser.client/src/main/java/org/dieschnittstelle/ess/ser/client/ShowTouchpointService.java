@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
@@ -177,7 +178,7 @@ public class ShowTouchpointService {
 	}
 
 	/**
-	 * TODO SER3
+	 * TODO SER4
 	 * 
 	 * @param tp
 	 */
@@ -188,6 +189,24 @@ public class ShowTouchpointService {
 
 		logger.debug("client running: {}",client.isRunning());
 
+		try {
+			HttpDelete request = new HttpDelete("http://localhost:8888/org.dieschnittstelle.ess.ser/api/touchpoints/" + tp.getId());
+
+			Future<HttpResponse> responseFuture = client.execute(request, null);
+
+			HttpResponse response = responseFuture.get();
+
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_NO_CONTENT) {
+				// let user know everything went fine
+				show("Touchpoint " + tp.getId() + " deleted");
+			} else if (response.getStatusLine().getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
+				// user should select element to delete
+				show("No Touchpoint ID was provided");
+			}
+			EntityUtils.consume(response.getEntity());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		// once you have received a response this is necessary to be able to
 		// use the client for subsequent requests:
 		// EntityUtils.consume(response.getEntity());
@@ -195,7 +214,7 @@ public class ShowTouchpointService {
 	}
 
 	/**
-	 * TODO SER4
+	 * TODO SER3
 	 * 
 	 * fuer das Schreiben des zu erzeugenden Objekts als Request Body siehe die
 	 * Hinweise auf:
@@ -221,9 +240,7 @@ public class ShowTouchpointService {
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 
 			// write the object to the output stream
-			show("baos before: %s", baos);
 			oos.writeObject(tp);
-			show("baos after: %s", baos);
 
 			// create a ByteArrayEntity and pass it the byte array from the
 			// output stream

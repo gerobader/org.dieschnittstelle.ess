@@ -3,6 +3,10 @@ package org.dieschnittstelle.ess.ser;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static org.dieschnittstelle.ess.utils.Utils.*;
 
+import com.sun.jndi.toolkit.url.Uri;
 import org.apache.http.HttpResponse;
 import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.entities.crm.AbstractTouchpoint;
@@ -55,7 +60,6 @@ public class TouchpointServiceServlet extends HttpServlet {
 
 	@Override	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-
 		// assume POST will only be used for touchpoint creation, i.e. there is
 		// no need to check the uri that has been used
 
@@ -89,5 +93,29 @@ public class TouchpointServiceServlet extends HttpServlet {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("doDelete()");
+		TouchpointCRUDExecutor exec = (TouchpointCRUDExecutor) getServletContext().getAttribute("touchpointCRUD");
+		URI uri = null;
+		try {
+			uri = new URI(request.getRequestURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		String[] segments = uri.getPath().split("/");
+		try {
+			Long tpId = Long.parseLong(segments[segments.length-1]);
+			try {
+				exec.deleteTouchpoint(tpId);
+				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		} catch(NumberFormatException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 	}
 }
