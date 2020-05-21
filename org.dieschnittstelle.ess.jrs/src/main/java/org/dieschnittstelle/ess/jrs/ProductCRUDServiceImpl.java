@@ -2,7 +2,16 @@ package org.dieschnittstelle.ess.jrs;
 
 import java.util.List;
 
+import org.dieschnittstelle.ess.entities.GenericCRUDExecutor;
+import org.dieschnittstelle.ess.entities.crm.AbstractTouchpoint;
+import org.dieschnittstelle.ess.entities.erp.AbstractProduct;
 import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
+
+import static org.dieschnittstelle.ess.utils.Utils.show;
 
 /*
  * TODO JRS2: implementieren Sie hier die im Interface deklarierten Methoden
@@ -10,36 +19,39 @@ import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 
 public class ProductCRUDServiceImpl implements IProductCRUDService {
 
+	private GenericCRUDExecutor<AbstractProduct> productCRUD;
+
+	public ProductCRUDServiceImpl(@Context ServletContext servletContext, @Context HttpServletRequest request) {
+		this.productCRUD = (GenericCRUDExecutor<AbstractProduct>)servletContext.getAttribute("productCRUD");
+	}
+
 	@Override
 	public IndividualisedProductItem createProduct(
 			IndividualisedProductItem prod) {
-		// TODO Auto-generated method stub
-		return null;
+		show("create Product: ", prod);
+		return (IndividualisedProductItem)this.productCRUD.createObject(prod);
 	}
 
 	@Override
 	public List<IndividualisedProductItem> readAllProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List)this.productCRUD.readAllObjects();
 	}
 
 	@Override
 	public IndividualisedProductItem updateProduct(long id,
 			IndividualisedProductItem update) {
-		// TODO Auto-generated method stub
-		return null;
+		// id is not needed for updateObject?
+		return (IndividualisedProductItem) this.productCRUD.updateObject(update);
 	}
 
 	@Override
 	public boolean deleteProduct(long id) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.productCRUD.deleteObject(id);
 	}
 
 	@Override
 	public IndividualisedProductItem readProduct(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (IndividualisedProductItem) this.productCRUD.readObject(id);
 	}
 	
 }
