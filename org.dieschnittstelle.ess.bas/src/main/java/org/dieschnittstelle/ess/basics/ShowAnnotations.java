@@ -3,6 +3,7 @@ package org.dieschnittstelle.ess.basics;
 
 import org.dieschnittstelle.ess.basics.annotations.AnnotatedStockItemBuilder;
 import org.dieschnittstelle.ess.basics.annotations.StockItemProxyImpl;
+import org.dieschnittstelle.ess.basics.reflection.DisplayAs;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -39,7 +40,13 @@ public class ShowAnnotations {
 			Class cl = consumable.getClass();
 			ArrayList<String> attrList = new ArrayList<String>();
 			for (Field field : cl.getDeclaredFields()) {
-				String fieldName = field.getName();
+				String fieldName;
+				if (field.isAnnotationPresent(DisplayAs.class)) {
+					DisplayAs nameAlias = field.getAnnotation(DisplayAs.class);
+					fieldName = nameAlias.value();
+				} else {
+					fieldName = field.getName();
+				}
 				// dirty
 				field.setAccessible(true);
 				String fieldValue = String.valueOf(field.get(consumable));
