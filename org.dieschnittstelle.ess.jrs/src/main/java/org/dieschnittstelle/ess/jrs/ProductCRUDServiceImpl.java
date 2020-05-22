@@ -26,22 +26,22 @@ public class ProductCRUDServiceImpl implements IProductCRUDService {
 	}
 
 	@Override
-	public IndividualisedProductItem createProduct(
-			IndividualisedProductItem prod) {
+	public AbstractProduct createProduct(
+			AbstractProduct prod) {
 		show("create Product: ", prod);
-		return (IndividualisedProductItem)this.productCRUD.createObject(prod);
+		return (AbstractProduct) this.productCRUD.createObject(prod);
 	}
 
 	@Override
-	public List<IndividualisedProductItem> readAllProducts() {
+	public List<AbstractProduct> readAllProducts() {
 		return (List)this.productCRUD.readAllObjects();
 	}
 
 	@Override
-	public IndividualisedProductItem updateProduct(long id,
-			IndividualisedProductItem update) {
+	public AbstractProduct updateProduct(long id,
+			AbstractProduct update) {
 		// id is not needed for updateObject?
-		return (IndividualisedProductItem) this.productCRUD.updateObject(update);
+		return (AbstractProduct) this.productCRUD.updateObject(update);
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class ProductCRUDServiceImpl implements IProductCRUDService {
 	}
 
 	@Override
-	public IndividualisedProductItem readProduct(long id) {
-		return (IndividualisedProductItem) this.productCRUD.readObject(id);
+	public AbstractProduct readProduct(long id) {
+		return (AbstractProduct) this.productCRUD.readObject(id);
 	}
 	
 }
