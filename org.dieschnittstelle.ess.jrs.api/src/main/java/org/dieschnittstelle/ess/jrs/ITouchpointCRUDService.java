@@ -28,10 +28,10 @@ public interface ITouchpointCRUDService {
 	/*
 	 * TODO JRS1: add a new annotated method for using the updateTouchpoint functionality of TouchpointCRUDExecutor and implement it
 	 *
-	 * this.touchpointCRUD.updateObject() benötigt keine id, nur das touchpoint Objekt/?
+	 * this.touchpointCRUD.updateObject() benötigt keine id, nur das touchpoint Objekt, welches schon die id enthält?
 	 */
 	@PUT
-	//@Path("/{touchpointId}")
-	StationaryTouchpoint updateTouchpoint(/*@PathParam("touchpointId")long id,*/ StationaryTouchpoint touchpoint);
+	@Path("/{touchpointId}")
+	StationaryTouchpoint updateTouchpoint(@PathParam("touchpointId")long id, StationaryTouchpoint touchpoint);
 
 }

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -213,11 +214,27 @@ public class JSONObjectMapper {
 
 				// check whether we have an abstract class that has jsontype
 				// info present
+				logger.info(type);
 				if (Modifier.isAbstract(((Class) type).getModifiers())) {
 					// TODO: include a handling for abstract classes considering
 					// the JsonTypeInfo annotation that might be set on type
-					throw new ObjectMappingException(
-							"cannot instantiate abstract class: " + type);
+					// I am really confused as to how this is supposed to work
+					logger.info("-----------------------ABSTRACT START-----------------------------------");
+					logger.info(((JsonTypeInfo)((Class) type).getAnnotation(JsonTypeInfo.class)).use());
+					JsonTypeInfo typeInfo = ((JsonTypeInfo)((Class) type).getAnnotation(JsonTypeInfo.class));
+					for (Iterator<String> it = ((ObjectNode) json).fieldNames(); it.hasNext();) {
+						String currentJsonField = it.next();
+						if (currentJsonField.equals(typeInfo.property())) {
+							String className = String.valueOf(((ObjectNode) json).findValue(currentJsonField));
+							className = className.replace("\"", "");
+							logger.info(className);
+							Class<?> klass = Class.forName(className);
+							obj = klass.getConstructor().newInstance();
+						}
+					}
+					if (obj == null) {
+						throw new ObjectMappingException("The class could not be mapped");
+					}
 				} else {
 					obj = ((Class) type).newInstance();
 				}
