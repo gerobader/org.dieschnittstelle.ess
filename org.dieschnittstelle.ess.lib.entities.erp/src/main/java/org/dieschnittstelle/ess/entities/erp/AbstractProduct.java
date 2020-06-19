@@ -6,9 +6,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.entities.GenericCRUDEntity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /*
  * TODO JRS3: entfernen Sie die Auskommentierung der Annotation
  */
+@Entity
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class AbstractProduct implements Serializable, GenericCRUDEntity {
 
@@ -19,6 +24,8 @@ public abstract class AbstractProduct implements Serializable, GenericCRUDEntity
 	 */
 	private static final long serialVersionUID = 6940403029597060153L;
 
+	@Id
+	@GeneratedValue
 	private long id;
 
 	private String name;
