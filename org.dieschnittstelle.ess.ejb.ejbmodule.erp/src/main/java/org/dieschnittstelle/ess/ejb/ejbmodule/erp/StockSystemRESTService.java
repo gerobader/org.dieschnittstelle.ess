@@ -22,15 +22,13 @@ public interface StockSystemRESTService {
 	 * adds some units of a product to the stock of a point of sale
 	 */
 	@POST
-	@Path("/{productId}/{pointOfSaleId}/{units}")
-    void addToStock(@PathParam("productId") long productId, @PathParam("pointOfSaleId") long pointOfSaleId, @PathParam("units") int units);
+    void addToStock(@QueryParam("productId") long productId, @QueryParam("pointOfSaleId") long pointOfSaleId, @QueryParam("units") int units);
 
 	/**
 	 * removes some units of a product from the stock of a point of sale
 	 */
 	@DELETE
-	@Path("/{productId}/{pointOfSaleId}/{units}")
-	void removeFromStock(@PathParam("productId") long productId, @PathParam("pointOfSaleId") long pointOfSaleId, @PathParam("units") int units);
+	void removeFromStock(@QueryParam("productId") long productId, @QueryParam("pointOfSaleId") long pointOfSaleId, @QueryParam("units") int units);
 
 	/**
 	 * returns all products on stock of some pointOfSale
