@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.entities.crm.Address;
 import org.dieschnittstelle.ess.entities.crm.StationaryTouchpoint;
+import org.dieschnittstelle.ess.utils.Utils;
 import org.dieschnittstelle.ess.wsv.client.service.ITouchpointCRUDService;
 
 import org.dieschnittstelle.ess.wsv.interpreter.JAXRSClientInterpreter;
@@ -93,13 +94,7 @@ public class AccessRESTServiceWithInterpreter {
     }
 
     public static void step() {
-        try {
-            System.out.println("/>");
-            System.in.read();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        Utils.step();
     }
 }
 

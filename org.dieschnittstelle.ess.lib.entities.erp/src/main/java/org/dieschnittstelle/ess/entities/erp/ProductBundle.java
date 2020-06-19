@@ -1,12 +1,11 @@
 package org.dieschnittstelle.ess.entities.erp;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 public class ProductBundle implements Serializable {
 
@@ -19,7 +18,9 @@ public class ProductBundle implements Serializable {
 
 	private long id;
 
-	private IndividualisedProductItem product;
+	// this has been changed to AbstractProduct due to some jboss/jackson serialisation issue
+	// in wildfly 18, which throws an error on unmarshalling, probably due to @JsonTypeInfo
+	private AbstractProduct product;
 
 	private int units;
 
@@ -28,15 +29,15 @@ public class ProductBundle implements Serializable {
 	}
 
 	public ProductBundle(IndividualisedProductItem product, int units) {
-		this.product = product;
 		this.units = units;
+		this.setProduct(product);
 	}
 
-	public IndividualisedProductItem getProduct() {
+	public AbstractProduct getProduct() {
 		return this.product;
 	}
 
-	public void setProduct(IndividualisedProductItem product) {
+	public void setProduct(AbstractProduct product) {
 		this.product = product;
 	}
 

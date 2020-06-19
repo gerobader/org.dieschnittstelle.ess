@@ -16,7 +16,11 @@ import java.lang.reflect.Method;
 
 import static org.dieschnittstelle.ess.utils.Utils.*;
 
-// this builder only reads in the 
+/*
+ * tries to instantiate a stock item from an xml element, assuming that
+ * attribute names from the xml representation coincide with attribute
+ * names on the class to be instantiated
+ */
 public class ReflectedStockItemBuilder implements IStockItemBuilder {
 
 	protected static Logger logger = LogManager

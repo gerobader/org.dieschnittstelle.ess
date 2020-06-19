@@ -2,12 +2,7 @@ package org.dieschnittstelle.ess.entities;
 
 import org.apache.logging.log4j.Logger;
 
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,6 +112,8 @@ public class GenericCRUDExecutor<T extends GenericCRUDEntity> {
 				System.out.println("the file " + this.objectsDatabaseFile
 						+ " does not exist yet. Will not try to read anything.");
 			} else {
+				System.out.println("loading from existing file: " + this.objectsDatabaseFile.getAbsolutePath());
+
 				ObjectInputStream ois = new ObjectInputStream(
 						new FileInputStream(this.objectsDatabaseFile));
 

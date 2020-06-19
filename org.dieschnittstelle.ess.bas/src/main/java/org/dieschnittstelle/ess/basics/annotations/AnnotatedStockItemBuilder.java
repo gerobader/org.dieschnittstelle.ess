@@ -10,6 +10,13 @@ import org.dieschnittstelle.ess.basics.IStockItemBuilder;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+/*
+ * tries to instantiate a stock item from an xml element and creates a proxy
+ * object wrapping around that item. The proxy class forwards calls of methods
+ * declared in the IStockItem interface to methods of the given implementation class,
+ * which does not implement stock item but uses annotations to declare which attributes
+ * and methods provide the respective information required by the IStockItem interface.
+ */
 public class AnnotatedStockItemBuilder implements IStockItemBuilder {
 
 	// the logger

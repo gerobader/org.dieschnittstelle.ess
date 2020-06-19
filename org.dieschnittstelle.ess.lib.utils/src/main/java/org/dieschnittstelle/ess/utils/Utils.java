@@ -1,9 +1,11 @@
 package org.dieschnittstelle.ess.utils;
 
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /*
  * well, this util class is rather small, so far...
@@ -34,8 +36,9 @@ public class Utils {
 	 */
 	public static void step() {
 		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			System.out.println("/>");
-			System.in.read();
+			br.readLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

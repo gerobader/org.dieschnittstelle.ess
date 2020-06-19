@@ -1,7 +1,5 @@
 package org.dieschnittstelle.ess.ejb.client.junit;
 
-import static org.dieschnittstelle.ess.ejb.client.Constants.*;
-
 import org.dieschnittstelle.ess.ejb.client.Constants;
 import org.dieschnittstelle.ess.ejb.client.TotalUsecase;
 import org.dieschnittstelle.ess.ejb.client.ejbclients.EJBProxyFactory;
@@ -9,7 +7,8 @@ import org.dieschnittstelle.ess.ejb.client.ejbclients.StockSystemClient;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.dieschnittstelle.ess.ejb.client.Constants.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestShoppingSession {
 
@@ -19,7 +18,7 @@ public class TestShoppingSession {
 	public void prepareContext() throws Exception {
 		EJBProxyFactory.initialise();
 
-		Constants.resetEntities();	
+		Constants.resetEntities();
 		stockSystemClient = new StockSystemClient();
 	}
 
@@ -29,7 +28,7 @@ public class TestShoppingSession {
 		TotalUsecase uc = new TotalUsecase();
 		uc.setStepping(false);
 		uc.setProvokeErrorOnPurchase(false);
-		uc.setUseShoppingSessionFacade(true);
+		uc.setUsePurchaseClient(true);
 		
 		uc.runAll();
 		

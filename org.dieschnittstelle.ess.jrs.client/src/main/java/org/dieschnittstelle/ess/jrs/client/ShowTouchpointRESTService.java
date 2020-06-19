@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.entities.crm.Address;
 import org.dieschnittstelle.ess.entities.crm.StationaryTouchpoint;
 import org.dieschnittstelle.ess.jrs.ITouchpointCRUDService;
+import org.dieschnittstelle.ess.utils.Utils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -42,13 +43,7 @@ public class ShowTouchpointRESTService {
 
 		// 2) delete the touchpoint after next console input
 		if (touchpoints != null && touchpoints.size() > 0) {
-			try {
-				System.out.println("/>");
-				System.in.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Utils.step();
 
 			StationaryTouchpoint tp = touchpoints.get(0);
 			serviceProxy.deleteTouchpoint(tp.getId());
@@ -59,13 +54,7 @@ public class ShowTouchpointRESTService {
 		}
 
 		// 3) wait for input and create a new touchpoint
-		try {
-			System.out.println("/>");
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Utils.step();
 
 		Address addr = new Address("Luxemburger Strasse", "10", "13353",
 				"Berlin");
@@ -78,13 +67,7 @@ public class ShowTouchpointRESTService {
 		/*
 		 * 4) wait for input and...
 		 */
-		try {
-			System.out.println("/>");
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Utils.step();
 		// change the name
 		tp.setName("BHT Mensa");
 

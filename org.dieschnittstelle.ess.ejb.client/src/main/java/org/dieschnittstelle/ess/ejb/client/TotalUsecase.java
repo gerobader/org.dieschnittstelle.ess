@@ -1,11 +1,9 @@
 package org.dieschnittstelle.ess.ejb.client;
 
-import static org.dieschnittstelle.ess.ejb.client.Constants.*;
-
-import java.util.Collection;
-
 import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.ejb.client.ejbclients.*;
+import org.dieschnittstelle.ess.ejb.client.shopping.ShoppingBusinessDelegate;
+import org.dieschnittstelle.ess.ejb.client.shopping.ShoppingSession;
 import org.dieschnittstelle.ess.ejb.client.shopping.ShoppingSessionClient;
 import org.dieschnittstelle.ess.ejb.ejbmodule.crm.CampaignTrackingRemote;
 import org.dieschnittstelle.ess.ejb.ejbmodule.crm.ShoppingException;
@@ -17,10 +15,11 @@ import org.dieschnittstelle.ess.ejb.ejbmodule.erp.crud.ProductCRUDRemote;
 import org.dieschnittstelle.ess.entities.crm.CampaignExecution;
 import org.dieschnittstelle.ess.entities.crm.Customer;
 import org.dieschnittstelle.ess.entities.crm.CustomerTransaction;
-import org.dieschnittstelle.ess.ejb.client.shopping.ShoppingBusinessDelegate;
-import org.dieschnittstelle.ess.ejb.client.shopping.ShoppingSession;
 
-import static org.dieschnittstelle.ess.utils.Utils.*;
+import java.util.Collection;
+
+import static org.dieschnittstelle.ess.ejb.client.Constants.*;
+import static org.dieschnittstelle.ess.utils.Utils.step;
 
 public class TotalUsecase {
 
@@ -46,9 +45,9 @@ public class TotalUsecase {
 	// TODO: ADD4: set to true for testing ShoppingException, set to false for testing success-case for transactions
 	private boolean provokeErrorOnPurchase = false /*true*/;
 
-	// TODO: PAT1: set to true for testing facade
+	// TODO: PAT1: set to true for testing purchase service
 	// TODO: ADD4: set to true for testing success-case for transactions and ShoppingException
-	private boolean useShoppingSessionFacade = false /*true*/;
+	private boolean usePurchaseClient = false /*true*/;
 
 	// declare the attributes that will be instantiated with the ejb clients - note that the attributes use the remote interface types
 	private ProductCRUDRemote productCRUD;
@@ -64,7 +63,7 @@ public class TotalUsecase {
 	
 	public void runAll() {
 
-		System.out.println("\n%%%%%%%%%%%% TotalUsecase: " + (this.provokeErrorOnPurchase ? "ShoppingException will be provoked (ADD4)" : "will run regularly") + ", using " + (EJBProxyFactory.getInstance().usesWebAPIAsDefault() ? "WebAPI clients" :"EJB clients") + " for accessing server-side components; " + (this.useShoppingSessionFacade ? "remote ShoppingSessionFacade will be used (PAT)" : "will use local ShoppingSession implementation") + " %%%%%%%%%%%\n\n");
+		System.out.println("\n%%%%%%%%%%%% TotalUsecase: " + (this.provokeErrorOnPurchase ? "ShoppingException will be provoked (ADD4)" : "will run regularly") + ", using " + (EJBProxyFactory.getInstance().usesWebAPIAsDefault() ? "WebAPI clients" :"EJB clients") + " for accessing server-side components; " + (this.usePurchaseClient ? "remote purchase service will be used (PAT)" : "will use local ShoppingSession implementation") + " %%%%%%%%%%%\n\n");
 
 		if (this.stepping) step();
 
@@ -173,7 +172,7 @@ public class TotalUsecase {
 					// it can access the required beans
 					ShoppingBusinessDelegate session;
 
-					if (!useShoppingSessionFacade) {
+					if (!usePurchaseClient) {
 						session = new ShoppingSession();
 					}
 					else {
@@ -251,8 +250,8 @@ public class TotalUsecase {
 		this.provokeErrorOnPurchase = provoke;
 	}
 
-	public void setUseShoppingSessionFacade(boolean use) {
-		this.useShoppingSessionFacade = use;
+	public void setUsePurchaseClient(boolean use) {
+		this.usePurchaseClient = use;
 	}
 
 
