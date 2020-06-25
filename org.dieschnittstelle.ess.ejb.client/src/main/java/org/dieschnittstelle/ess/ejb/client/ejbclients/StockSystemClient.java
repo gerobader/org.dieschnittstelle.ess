@@ -52,57 +52,57 @@ public class StockSystemClient implements StockSystemRemote {
 
 	@Override
 	public List<IndividualisedProductItem> getProductsOnStock(long pointOfSaleId) {
-//		if (ejbProxy != null) {
-//			return this.ejbProxy.getProductsOnStock(pointOfSaleId);
-//		}
-//		else {
-//			return this.serviceProxy.getProductsOnStock(pointOfSaleId);
-//		}
-		return new ArrayList<>();
+		if (ejbProxy != null) {
+			return this.ejbProxy.getProductsOnStock(pointOfSaleId);
+		}
+		else {
+			return this.serviceProxy.getProductsOnStock(pointOfSaleId);
+		}
+		// return new ArrayList<>();
 	}
 
 	@Override
 	public List<IndividualisedProductItem> getAllProductsOnStock() {
-//		if (ejbProxy != null) {
-//			return this.ejbProxy.getAllProductsOnStock();
-//		}
-//		else {
-//			return this.serviceProxy.getAllProductsOnStock();
-//		}
-		return new ArrayList<>();
+		if (ejbProxy != null) {
+			return this.ejbProxy.getAllProductsOnStock();
+		}
+		else {
+			return this.serviceProxy.getProductsOnStock(0);
+		}
+		// return new ArrayList<>();
 	}
 
 	@Override
 	public int getUnitsOnStock(IndividualisedProductItem product, long pointOfSaleId) {
-//		if (ejbProxy != null) {
-//			return this.ejbProxy.getUnitsOnStock(product,pointOfSaleId);
-//		}
-//		else {
-//			return this.serviceProxy.getUnitsOnStock(product.getId(),pointOfSaleId);
-//		}
-		return 0;
+		if (ejbProxy != null) {
+			return this.ejbProxy.getUnitsOnStock(product,pointOfSaleId);
+		}
+		else {
+			return this.serviceProxy.getUnitsOnStock(product.getId(),pointOfSaleId);
+		}
 	}
 
 	@Override
 	public int getTotalUnitsOnStock(IndividualisedProductItem product) {
-//		if (ejbProxy != null) {
-//			return this.ejbProxy.getTotalUnitsOnStock(product);
-//		}
-//		else {
-//			return this.serviceProxy.getTotalUnitsOnStock(product.getId());
-//		}
-		return 0;
+		if (ejbProxy != null) {
+			return this.ejbProxy.getTotalUnitsOnStock(product);
+		}
+		else {
+			return this.serviceProxy.getUnitsOnStock(product.getId(), 0);
+		}
+		//return 0;
 	}
+
 
 	@Override
 	public List<Long> getPointsOfSale(IndividualisedProductItem product) {
-//		if (ejbProxy != null) {
-//			return this.ejbProxy.getPointsOfSale(product);
-//		}
-//		else {
-//			return this.serviceProxy.getPointsOfSale(product.getId());
-//		}
-		return new ArrayList<>();
+		if (ejbProxy != null) {
+			return this.ejbProxy.getPointsOfSale(product);
+		}
+		else {
+			return this.serviceProxy.getPointsOfSale(product.getId());
+		}
+		//return new ArrayList<>();
 	}
 
 

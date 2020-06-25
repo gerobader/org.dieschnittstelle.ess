@@ -7,6 +7,7 @@ import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.ws.rs.BadRequestException;
 import java.util.List;
 
 @Remote({StockSystemRESTService.class})
@@ -31,28 +32,35 @@ public class StockSystemRESTServiceImpl implements StockSystemRESTService{
         stockSystem.removeFromStock((IndividualisedProductItem) prod, pointOfSaleId, units);
     }
 
-//    @Override
-//    public List<IndividualisedProductItem> getProductsOnStock(long pointOfSaleId) {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<IndividualisedProductItem> getAllProductsOnStock() {
-//        return null;
-//    }
-//
-//    @Override
-//    public int getUnitsOnStock(long productId, long pointOfSaleId) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public int getTotalUnitsOnStock(long productId) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public List<Long> getPointsOfSale(long productId) {
-//        return null;
-//    }
+    @Override
+    public List<IndividualisedProductItem> getProductsOnStock(long pointOfSaleId) {
+        if (pointOfSaleId > 0) {
+            return stockSystem.getProductsOnStock(pointOfSaleId);
+        } else {
+            return stockSystem.getAllProductsOnStock();
+        }
+    }
+
+    @Override
+    public int getUnitsOnStock(long productId, long pointOfSaleId) {
+        if (productId > 0) {
+            AbstractProduct p = productCRUD.readProduct(productId);
+            if (pointOfSaleId > 0) {
+                return stockSystem.getUnitsOnStock((IndividualisedProductItem) p, pointOfSaleId);
+            }
+            return stockSystem.getTotalUnitsOnStock((IndividualisedProductItem) p);
+        } else {
+            throw new BadRequestException("Product Id was not supplied");
+        }
+    }
+
+    @Override
+    public List<Long> getPointsOfSale(long productId) {
+        AbstractProduct p = productCRUD.readProduct(productId);
+        if (p instanceof IndividualisedProductItem) {
+            return stockSystem.getPointsOfSale((IndividualisedProductItem) p);
+        } else {
+            throw new BadRequestException("productId " + productId + " does not refer to an IndividualizedProductItem");
+        }
+    }
 }

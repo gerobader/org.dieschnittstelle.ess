@@ -8,6 +8,9 @@ import org.dieschnittstelle.ess.entities.erp.StockItem;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.ws.rs.BadRequestException;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
@@ -18,6 +21,7 @@ public class StockSystemSingleton implements StockSystemLocal {
 
     @EJB
     private PointOfSaleCRUDLocal posCrud;
+
     @Override
     public void addToStock(IndividualisedProductItem product, long pointOfSaleId, int units) {
         System.out.println("addToStock(): siCrud: " + siCrud + " of class " + siCrud.getClass());
@@ -34,32 +38,63 @@ public class StockSystemSingleton implements StockSystemLocal {
 
     @Override
     public void removeFromStock(IndividualisedProductItem product, long pointOfSaleId, int units) {
-
+        PointOfSale pos = posCrud.readPointOfSale(pointOfSaleId);
+        StockItem stockItem = siCrud.readStockItem(product, pos);
+        if (units > stockItem.getUnits()) {
+            throw new BadRequestException("Cannot remove more units than are in stock");
+        }
+        stockItem.setUnits(stockItem.getUnits() - units);
     }
 
     @Override
     public List<IndividualisedProductItem> getProductsOnStock(long pointOfSaleId) {
-        return null;
+        PointOfSale pos = posCrud.readPointOfSale(pointOfSaleId);
+        List<StockItem> stockItems = siCrud.readStockItemsForPointOfSale(pos);
+        List<IndividualisedProductItem> productList = new ArrayList<>();
+        for (StockItem si : stockItems) {
+            if (!productList.contains(si.getProduct())) {
+                productList.add(si.getProduct());
+            }
+        }
+        return productList;
     }
 
     @Override
     public List<IndividualisedProductItem> getAllProductsOnStock() {
-        return null;
+        List<PointOfSale> pointsOfSale = posCrud.readAllPointsOfSale();
+        List<IndividualisedProductItem> productList = new ArrayList<>();
+        for (PointOfSale pos : pointsOfSale) {
+            List<StockItem> stockItems = siCrud.readStockItemsForPointOfSale(pos);
+            for (StockItem si : stockItems) {
+                if (!productList.contains(si.getProduct())) {
+                    productList.add(si.getProduct());
+                }
+            }
+        }
+        return productList;
     }
 
     @Override
     public int getUnitsOnStock(IndividualisedProductItem product, long pointOfSaleId) {
-        return 0;
+        PointOfSale pos = posCrud.readPointOfSale(pointOfSaleId);
+        StockItem stockItem = siCrud.readStockItem(product, pos);
+        return stockItem.getUnits();
     }
 
     @Override
     public int getTotalUnitsOnStock(IndividualisedProductItem product) {
-        return 0;
+        List<StockItem> stockItems = siCrud.readStockItemsForProduct(product);
+        return stockItems.stream().mapToInt(si -> si.getUnits()).sum();
     }
 
     @Override
     public List<Long> getPointsOfSale(IndividualisedProductItem product) {
-        return null;
+        List<StockItem> stockItems = siCrud.readStockItemsForProduct(product);
+        List<Long> poss = new ArrayList<>();
+        for (StockItem si : stockItems) {
+            poss.add(si.getPos().getId());
+        }
+        return poss;
     }
 
     @Override
