@@ -27,7 +27,6 @@ public class StockSystemSingleton implements StockSystemLocal {
         if (stockItem == null) {
             stockItem = new StockItem(product, pos, units);
             siCrud.createStockItem(stockItem);
-
         } else {
             stockItem.setUnits(stockItem.getUnits() + units);
         }

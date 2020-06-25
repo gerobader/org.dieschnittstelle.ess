@@ -2,6 +2,7 @@ package org.dieschnittstelle.ess.ejb.ejbmodule.erp.crud;
 
 import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 import org.dieschnittstelle.ess.entities.erp.PointOfSale;
+import org.dieschnittstelle.ess.entities.erp.ProductAtPosPK;
 import org.dieschnittstelle.ess.entities.erp.StockItem;
 
 
@@ -25,12 +26,7 @@ public class StockItemCRUDStateless implements StockItemCRUDLocal{
 
     @Override
     public StockItem readStockItem(IndividualisedProductItem prod, PointOfSale pos) {
-        Query q = em.createQuery("SELECT si FROM StockItem si WHERE si.pos = " + pos.getId() + "AND si.product = " + prod.getId());
-        List<StockItem> stockItems = q.getResultList();
-        if (stockItems.size() > 0) {
-            return stockItems.get(0);
-        }
-        return null;
+        return em.find(StockItem.class, new ProductAtPosPK(prod, pos));
     }
 
     @Override
