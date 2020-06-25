@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
-public abstract class  AbstractProduct implements Serializable, GenericCRUDEntity {
+public abstract class AbstractProduct implements Serializable, GenericCRUDEntity {
 
 	protected static Logger logger = org.apache.logging.log4j.LogManager.getLogger(AbstractProduct.class);
 

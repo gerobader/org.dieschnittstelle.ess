@@ -16,12 +16,6 @@ public class ProductCRUDStateless implements ProductCRUDRemote{
 
     @Override
     public AbstractProduct createProduct(AbstractProduct prod) {
-//        AbstractProduct p = em.find(AbstractProduct.class, prod.getId());
-//        if (p == null) {
-//            em.persist(prod);
-//            return prod;
-//        }
-//        return null;
         em.persist(prod);
         return prod;
     }
