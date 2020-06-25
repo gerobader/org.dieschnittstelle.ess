@@ -100,6 +100,8 @@ public class ShowStockSystem {
 		stockSystemClient.addToStock(PRODUCT_1,
 				TOUCHPOINT_1.getErpPointOfSaleId(), 100);
 		stockSystemClient.addToStock(PRODUCT_1,
+				TOUCHPOINT_1.getErpPointOfSaleId(), 50);
+		stockSystemClient.addToStock(PRODUCT_1,
 				TOUCHPOINT_2.getErpPointOfSaleId(), 90);
 		stockSystemClient.addToStock(PRODUCT_2,
 				TOUCHPOINT_1.getErpPointOfSaleId(), 80);
