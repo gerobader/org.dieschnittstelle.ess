@@ -16,6 +16,12 @@ public class ProductCRUDStateless implements ProductCRUDRemote{
 
     @Override
     public AbstractProduct createProduct(AbstractProduct prod) {
+//        AbstractProduct p = em.find(AbstractProduct.class, prod.getId());
+//        if (p == null) {
+//            em.persist(prod);
+//            return prod;
+//        }
+//        return null;
         em.persist(prod);
         return prod;
     }
@@ -28,7 +34,7 @@ public class ProductCRUDStateless implements ProductCRUDRemote{
 
     @Override
     public AbstractProduct updateProduct(AbstractProduct update) {
-        return null;
+        return em.merge(update);
     }
 
     @Override
@@ -38,6 +44,11 @@ public class ProductCRUDStateless implements ProductCRUDRemote{
 
     @Override
     public boolean deleteProduct(long productID) {
+        AbstractProduct p = em.find(AbstractProduct.class, productID);
+        if (p != null) {
+            em.remove(p);
+            return true;
+        }
         return false;
     }
 }
