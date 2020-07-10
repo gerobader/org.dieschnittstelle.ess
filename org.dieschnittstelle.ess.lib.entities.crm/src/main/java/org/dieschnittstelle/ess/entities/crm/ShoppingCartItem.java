@@ -23,7 +23,7 @@ import org.dieschnittstelle.ess.entities.erp.AbstractProduct;
  * units for some erpProductId and also tracks wheher the product is a campaign
  */
 @Entity
-public class ShoppingCartItem implements Serializable {
+public class ShoppingCartItem implements Serializable, Cloneable {
 
 	protected static Logger logger = org.apache.logging.log4j.LogManager.getLogger(ShoppingCartItem.class);
 
@@ -146,6 +146,10 @@ public class ShoppingCartItem implements Serializable {
 
 	public void setProductObj(AbstractProduct productObj) {
 		this.productObj = productObj;
+	}
+
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }
