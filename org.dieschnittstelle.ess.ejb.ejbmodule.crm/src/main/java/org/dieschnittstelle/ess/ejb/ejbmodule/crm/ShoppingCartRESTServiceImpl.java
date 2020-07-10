@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Singleton
 @Startup
-public class ShoppingCartRESTServiceImpl implements ShoppingCartRESTService {
+public class ShoppingCartRESTServiceImpl implements ShoppingCartRESTService, ShoppingCartServiceLocal {
 
     protected static Logger logger = org.apache.logging.log4j.LogManager.getLogger(ShoppingCartRESTServiceImpl.class);
 
@@ -57,6 +57,10 @@ public class ShoppingCartRESTServiceImpl implements ShoppingCartRESTService {
     public boolean deleteCart(long cartId) {
         em.remove(em.find(ShoppingCartStateful.class,cartId));
         return true;
+    }
+
+    public ShoppingCartRemote getCartForId(long cartId) {
+        return em.find(ShoppingCartStateful.class, cartId);
     }
 
     // if a task shall be scheduled every couple of seconds, also hour and minute need to be specied as "any" ('*')
