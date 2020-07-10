@@ -121,21 +121,17 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
      * TODO PAT2: complete the method implementation in your server-side component for shopping / purchasing
      */
     private void checkAndRemoveProductsFromStock() {
-        logger.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         logger.info("checkAndRemoveProductsFromStock");
         List<ShoppingCartItem> items = new ArrayList<>(this.shoppingCart.getItems());
         for (ShoppingCartItem item : this.shoppingCart.getItems()) {
 
             // TODO: ermitteln Sie das AbstractProduct für das gegebene ShoppingCartItem. Nutzen Sie dafür dessen erpProductId und die ProductCRUD EJB
             AbstractProduct product = productCRUDLocal.readProduct(item.getErpProductId());
-            logger.info(product);
             if (item.isCampaign()) {
-                logger.info("is campaign");
                 campaignTracking.purchaseCampaignAtTouchpoint(item.getErpProductId(), this.touchpoint, item.getUnits());
                 // TODO: wenn Sie eine Kampagne haben, muessen Sie hier
                 // 1) ueber die ProductBundle Objekte auf dem Campaign Objekt iterieren, und
                 Campaign campaign = (Campaign) product;
-                logger.info(campaign);
                 for (ProductBundle productBundle : campaign.getBundles()) {
                     // 2) fuer jedes ProductBundle das betreffende Produkt in der auf dem Bundle angegebenen Anzahl, multipliziert mit dem Wert von
                     // item.getUnits() aus dem Warenkorb,
@@ -151,12 +147,10 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
                 }
 
             } else {
-                logger.info("is single Product");
                 // TODO: andernfalls (wenn keine Kampagne vorliegt) muessen Sie
                 // 1) das Produkt in der in item.getUnits() angegebenen Anzahl hinsichtlich Verfuegbarkeit ueberpruefen und
                 if (stockSystemLocal.getUnitsOnStock((IndividualisedProductItem) product, this.touchpoint.getErpPointOfSaleId()) >= item.getUnits()) {
                     // 2) das Produkt, falls verfuegbar, in der entsprechenden Anzahl aus dem Warenlager entfernen
-                    logger.info("is In Stock");
                     stockSystemLocal.removeFromStock((IndividualisedProductItem) product, this.touchpoint.getErpPointOfSaleId(), item.getUnits());
                 }
             }
