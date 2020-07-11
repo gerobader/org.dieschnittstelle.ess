@@ -8,13 +8,17 @@ import org.dieschnittstelle.ess.entities.erp.StockItem;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.ws.rs.BadRequestException;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-public class StockSystemSingleton implements StockSystemLocal {
+@WebService(targetNamespace = "http://dieschnittstelle.org/ess/jws", serviceName = "StockSystemRemoteWebService", endpointInterface = "org.dieschnittstelle.ess.ejb.ejbmodule.erp.StockSystemRemote")
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
+public class StockSystemSingleton implements StockSystemLocal, StockSystemRemote {
 
     @EJB
     private StockItemCRUDLocal siCrud;
