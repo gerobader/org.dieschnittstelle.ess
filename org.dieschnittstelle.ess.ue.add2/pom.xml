@@ -31,7 +31,7 @@
                             <sourceRoot>${basedir}/target/generated-sources/jaxws</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>TODO: Specify URL for ADD2</wsdl>
+                                    <wsdl>http://localhost:8080/org.dieschnittstelle.ess.ejb.ejbmodule.erp/ProductCRUDRemoteWebService/ProductCRUDStateless?wsdl</wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>

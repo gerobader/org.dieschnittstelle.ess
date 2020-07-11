@@ -5,6 +5,7 @@ import java.util.List;
 import org.dieschnittstelle.ess.entities.erp.AbstractProduct;
 
 import javax.ejb.Remote;
+import javax.jws.WebService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -14,6 +15,7 @@ import javax.ws.rs.core.MediaType;
  * See TouchpointCRUDStateless for an example EJB with a similar scope of functionality
  */
 @Remote
+@WebService
 @Path("/products")
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
