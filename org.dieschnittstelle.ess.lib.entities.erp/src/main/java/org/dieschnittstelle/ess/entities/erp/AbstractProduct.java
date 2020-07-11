@@ -7,11 +7,13 @@ import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.entities.GenericCRUDEntity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  * TODO JRS3: entfernen Sie die Auskommentierung der Annotation
  */
 @Entity
+@XmlType(namespace = "http://dieschnittstelle.org/ess/entities/erp/ws")
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class AbstractProduct implements Serializable, GenericCRUDEntity {
 

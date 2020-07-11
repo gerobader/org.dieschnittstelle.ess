@@ -6,8 +6,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlType;
 
 @Entity
+@XmlType(namespace = "http://dieschnittstelle.org/ess/entities/erp/ws")
 public class IndividualisedProductItem extends AbstractProduct implements Serializable {
 
 	protected static Logger logger = org.apache.logging.log4j.LogManager.getLogger(IndividualisedProductItem.class);
