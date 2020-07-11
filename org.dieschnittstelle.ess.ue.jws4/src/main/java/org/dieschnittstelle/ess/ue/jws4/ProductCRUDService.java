@@ -35,6 +35,7 @@ public class ProductCRUDService {
 	protected static Logger logger = org.apache.logging.log4j.LogManager
 			.getLogger(ProductCRUDService.class);
 
+	@Resource
 	private WebServiceContext wscontext;
 
 	public ProductCRUDService() {logger.info("<constructor>");}
