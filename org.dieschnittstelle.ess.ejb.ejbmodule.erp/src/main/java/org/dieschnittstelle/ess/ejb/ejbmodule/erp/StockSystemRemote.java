@@ -6,6 +6,7 @@ import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 
 import javax.ejb.Remote;
 import javax.jws.WebService;
+import javax.transaction.Transactional;
 
 /**
  * OBSOLETE IF REST ACCESS IS USED TO SERVER-SIDE COMPONENTS:
@@ -37,6 +38,7 @@ public interface StockSystemRemote {
 	 * @param pointOfSaleId
 	 * @param units
 	 */
+	@Transactional(Transactional.TxType.MANDATORY)
     void removeFromStock(IndividualisedProductItem product, long pointOfSaleId, int units);
 
 	/**

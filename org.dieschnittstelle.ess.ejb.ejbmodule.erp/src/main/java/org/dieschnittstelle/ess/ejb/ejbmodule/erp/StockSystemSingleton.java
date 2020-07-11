@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
 import java.awt.*;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class StockSystemSingleton implements StockSystemLocal, StockSystemRemote
     }
 
     @Override
+    @Transactional(Transactional.TxType.MANDATORY)
     public void removeFromStock(IndividualisedProductItem product, long pointOfSaleId, int units) {
         PointOfSale pos = posCrud.readPointOfSale(pointOfSaleId);
         StockItem stockItem = siCrud.readStockItem(product, pos);
