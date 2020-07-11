@@ -16,6 +16,7 @@ import org.dieschnittstelle.ess.entities.crm.AbstractTouchpoint;
 import org.dieschnittstelle.ess.entities.crm.StationaryTouchpoint;
 import org.dieschnittstelle.ess.entities.GenericCRUDExecutor;
 import org.apache.logging.log4j.Logger;
+import org.dieschnittstelle.ess.entities.erp.AbstractProduct;
 
 @WebService(targetNamespace = "http://dieschnittstelle.org/ess/jws", name = "ITouchpointCRUDService", serviceName = "TouchpointCRUDWebService", portName = "TouchpointCRUDPort")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
@@ -110,5 +111,13 @@ public class TouchpointCRUDService {
 	/*
 	 * TODO JWS3: erweitern Sie den Service
 	 */
+	@WebMethod
+	public AbstractTouchpoint updateTouchpoint(AbstractTouchpoint tp) {
+		GenericCRUDExecutor<AbstractTouchpoint> touchpointCRUD = (GenericCRUDExecutor<AbstractTouchpoint>) ((ServletContext) wscontext
+				.getMessageContext().get(MessageContext.SERVLET_CONTEXT))
+				.getAttribute("touchpointCRUD");
+		
+		return touchpointCRUD.updateObject(tp);
+	}
 
 }
