@@ -38,7 +38,6 @@ public interface StockSystemRemote {
 	 * @param pointOfSaleId
 	 * @param units
 	 */
-	@Transactional(Transactional.TxType.MANDATORY)
     void removeFromStock(IndividualisedProductItem product, long pointOfSaleId, int units);
 
 	/**

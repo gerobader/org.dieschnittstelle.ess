@@ -43,7 +43,7 @@ public class TotalUsecase {
 	private boolean stepping = true;
 	// allow to switch error provocation from outside via setting this attribute
 	// TODO: ADD4: set to true for testing ShoppingException, set to false for testing success-case for transactions
-	private boolean provokeErrorOnPurchase = true /*true*/;
+	private boolean provokeErrorOnPurchase = false /*true*/;
 
 	// TODO: PAT1: set to true for testing purchase service
 	// TODO: ADD4: set to true for testing success-case for transactions and ShoppingException

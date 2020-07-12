@@ -63,7 +63,7 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
     /*
      * verify whether campaigns are still valid
      */
-    @Transactional(Transactional.TxType.MANDATORY)
+    //@Transactional(Transactional.TxType.MANDATORY)
     public void verifyCampaigns() throws ShoppingException {
         if (this.customer == null || this.touchpoint == null) {
             throw new RuntimeException("cannot verify campaigns! No touchpoint has been set!");
@@ -86,8 +86,8 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
         }
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public void purchase() {
+    //@Transactional(Transactional.TxType.REQUIRES_NEW)
+    public void purchase() throws ShoppingException {
         logger.info("purchase()");
 
         if (this.customer == null || this.touchpoint == null) {
@@ -96,6 +96,27 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
                             + "/" + this.touchpoint);
         }
 
+        verifyCampaigns();
+
+        // remove the products from stock
+        checkAndRemoveProductsFromStock();
+        // then we add a new customer transaction for the current purchase
+        List<ShoppingCartItem> products = new ArrayList<ShoppingCartItem>();
+        // Hier gibt es bestimmt einen besseren weg
+        for (ShoppingCartItem item : this.shoppingCart.getItems()) {
+            try {
+                ShoppingCartItem clonedItem = (ShoppingCartItem) item.clone();
+                products.add(clonedItem);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
+        CustomerTransaction transaction = new CustomerTransaction(this.customer, this.touchpoint, products);
+        transaction.setCompleted(true);
+        customerTracking.createTransaction(transaction);
+        logger.info("purchase(): done.\n");
+
+        /*
         try {
             verifyCampaigns();
 
@@ -118,14 +139,14 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
             logger.info("purchase(): done.\n");
         } catch (ShoppingException e) {
             logger.info("Transaction was not completed: " + e.getMessage() + " | " + e.getReason());
-        }
+        }*/
     }
 
     /*
      * TODO PAT2: complete the method implementation in your server-side component for shopping / purchasing
      */
-    @Transactional(Transactional.TxType.MANDATORY)
-    private void checkAndRemoveProductsFromStock() throws ShoppingException{
+    //@Transactional(Transactional.TxType.MANDATORY)
+    private void checkAndRemoveProductsFromStock() /*throws ShoppingException*/{
         logger.info("checkAndRemoveProductsFromStock");
         List<ShoppingCartItem> items = new ArrayList<>(this.shoppingCart.getItems());
         for (ShoppingCartItem item : this.shoppingCart.getItems()) {
@@ -148,9 +169,9 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
                     // Warenkorb liegt)
                     if (stockSystemLocal.getUnitsOnStock((IndividualisedProductItem) bundleProduct, this.touchpoint.getErpPointOfSaleId()) >= productCount) {
                         stockSystemLocal.removeFromStock((IndividualisedProductItem) bundleProduct, this.touchpoint.getErpPointOfSaleId(), productCount);
-                    } else {
+                    }/* else {
                         throw new ShoppingException(ShoppingException.ShoppingSessionExceptionReason.STOCK_EXCEEDED);
-                    }
+                    }*/
                 }
 
             } else {
@@ -159,9 +180,9 @@ public class PurchaseShoppingCartServiceStateless implements PurchaseShoppingCar
                 if (stockSystemLocal.getUnitsOnStock((IndividualisedProductItem) product, this.touchpoint.getErpPointOfSaleId()) >= item.getUnits()) {
                     // 2) das Produkt, falls verfuegbar, in der entsprechenden Anzahl aus dem Warenlager entfernen
                     stockSystemLocal.removeFromStock((IndividualisedProductItem) product, this.touchpoint.getErpPointOfSaleId(), item.getUnits());
-                } else {
+                }/* else {
                     throw new ShoppingException(ShoppingException.ShoppingSessionExceptionReason.STOCK_EXCEEDED);
-                }
+                }*/
             }
 
         }

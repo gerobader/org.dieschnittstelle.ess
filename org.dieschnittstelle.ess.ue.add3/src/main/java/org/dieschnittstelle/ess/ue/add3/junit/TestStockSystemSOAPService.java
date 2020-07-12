@@ -58,8 +58,8 @@ public class TestStockSystemSOAPService {
 		assertEquals("after adding units, total units correctly incremented", unitsTotal + unitsToAdd, serviceProxy.getTotalUnitsOnStock(testprod));
 
 		// PROVOKE ERROR
-		serviceProxy.removeFromStock(testprod, testpos, 10);
-		assertEquals("after removing units, units at pos correctly decremented", unitsAtPos + unitsToAdd - 10, serviceProxy.getUnitsOnStock(testprod, testpos));
+		//serviceProxy.removeFromStock(testprod, testpos, 10);
+		//assertEquals("after removing units, units at pos correctly decremented", unitsAtPos + unitsToAdd - 10, serviceProxy.getUnitsOnStock(testprod, testpos));
 
 	}
 	

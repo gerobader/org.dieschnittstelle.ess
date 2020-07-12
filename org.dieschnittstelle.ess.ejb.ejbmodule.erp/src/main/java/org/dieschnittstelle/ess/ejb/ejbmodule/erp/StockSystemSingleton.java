@@ -42,7 +42,7 @@ public class StockSystemSingleton implements StockSystemLocal, StockSystemRemote
     }
 
     @Override
-    @Transactional(Transactional.TxType.MANDATORY)
+    //@Transactional(Transactional.TxType.MANDATORY)
     public void removeFromStock(IndividualisedProductItem product, long pointOfSaleId, int units) {
         PointOfSale pos = posCrud.readPointOfSale(pointOfSaleId);
         StockItem stockItem = siCrud.readStockItem(product, pos);
